@@ -11,13 +11,13 @@ for line in sys.stdin:
     # get data from input line and split it
     pair, shooting_data = line.strip().split('\t')
     _, defender = pair.split('-')
-    shots, successful = shooting_data.split(',')
+    shots_taken, made = shooting_data.split(',')
     
     # check if defender already exists in the dictionary and update their shot and successful shots count
     current = defenders.get(defender, [0, 0])
     try:
-        current[0] += int(shots) 
-        current[1] += int(successful)
+        current[0] += int(shots_taken) 
+        current[1] += int(made)
         defenders[defender] = current
     except ValueError:
         pass
@@ -28,12 +28,12 @@ for key, value in defenders.items():
     if value[0] < 10:
         continue
     rate = float(value[1]) / value[0]
-    shots = value[0]
-    rates.append([key, rate, shots])
+    shots_taken = value[0]
+    rates.append([key, rate, shots_taken])
 
 # sort list of rates by the rate value
 rates.sort(key=itemgetter(1))
 
 # print the top 10 defenders with the highest rate
-for defender, rate, shots in rates[:10]:
-    print('{}\t{:.2%}\t{:,d}'.format(defender, rate, shots))
+for defender, rate, shots_taken in rates[:10]:
+    print('{}\t{:.2%}\t{:,d}'.format(defender, rate, shots_taken))
