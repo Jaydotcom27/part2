@@ -15,15 +15,22 @@ def map_range(value, ranges):
     return len(ranges)
 
 # read input data
+# file = open('E:\@FORDHAM\BigData\shot_logs.csv', 'r')
 header = sys.stdin.readline()
+# reader = csv.reader(file)
 reader = csv.reader(sys.stdin)
+next(reader)
 
 # process each shot record
 for row in reader:
-    player = row[15]
-    shot_dist = float(row[10])
-    defender_dist = float(row[11])
-    shot_clock = float(row[7])
+    if row[15]:
+        player = row[15]
+    if row[11]:
+        shot_dist = float(row[11])
+    if row[16]:
+        defender_dist = float(row[16])
+    if row[8]:
+        shot_clock = float(row[8])
     
     # map shot distance, closest defender distance, and shot clock to the correct range
     shot_dist_zone = map_range(shot_dist, shot_dist_ranges)
@@ -32,3 +39,5 @@ for row in reader:
     
     # output player name and tuple of zone counts
     print(player, (shot_dist_zone, defender_dist_zone, shot_clock_zone))
+
+# file.close()
