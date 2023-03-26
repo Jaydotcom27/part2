@@ -34,6 +34,6 @@ for key, value in defenders.items():
 # sort list of rates by the rate value
 rates.sort(key=itemgetter(1))
 
-# print the top 10 defenders with the highest rate
+# print the top 10 defenders with the lowest rate, meaning; most unwanted defender
 for defender, rate, shots_taken in rates[:10]:
     print('{}\t{:.2%}\t{:,d}'.format(defender, rate, shots_taken))
