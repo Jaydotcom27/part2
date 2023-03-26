@@ -1,26 +1,48 @@
-#!/usr/bin/python
-# --*-- coding:utf-8 --*--
+#!/usr/bin/env python
+
 import sys
 
-players = {}
+# Set up empty dictionary to hold player data
+player_data = {}
 
+# Read through each line of input
 for line in sys.stdin:
-    player, shot_data = line.strip().split("\t")
-    shot_dist, def_dist, clock, shot_result = shot_data.split(',')
-    #[[shot dists..], [close def dists..], [shot clock..], [shot result...]]
-    current = players.get(player, [[],[],[],[]])
-    try:
-        current[0].append(round(float(shot_dist), 4))
-        current[1].append(round(float(def_dist), 4))
-        current[2].append(round(float(clock), 4))
-        current[3].append(int(shot_result))
-        players[player] = current
-    except ValueError:
-        pass
 
-for player, data in sorted(players.items(), key=lambda x: x[0]):
-    shot_dist_avg = round(sum(data[0]) / len(data[0]), 4)
-    close_def_avg = round(sum(data[1]) / len(data[1]), 4)
-    shot_clock_avg = round(sum(data[2]) / len(data[2]), 4)
-    shot_rate = round(float(sum(data[3])) / len(data[3]), 4)
-    print("{}\t{},{},{},{}".format(player, shot_dist_avg, close_def_avg, shot_clock_avg, shot_rate))
+    # Split line into components
+    player, shot_dist, def_dist, shot_clock, shots_made, total_shots = line.strip().split('\t')
+    
+    # Convert values to integers
+    shot_dist = int(shot_dist)
+    def_dist = int(def_dist)
+    shot_clock = int(shot_clock)
+    shots_made = int(shots_made)
+    total_shots = int(total_shots)
+
+    # Check if player is already in dictionary
+    if player not in player_data:
+        player_data[player] = {'zone_1': [0, 0], 'zone_2': [0, 0], 'zone_3': [0, 0], 'zone_4': [0, 0]}
+
+    # Check which zone the shot falls into and update the appropriate count
+    if shot_dist <= 10 and def_dist <= 2 and shot_clock >= 20:
+        player_data[player]['zone_1'][0] += shots_made
+        player_data[player]['zone_1'][1] += total_shots
+    elif shot_dist <= 10 and def_dist <= 2 and shot_clock < 20:
+        player_data[player]['zone_2'][0] += shots_made
+        player_data[player]['zone_2'][1] += total_shots
+    elif shot_dist > 10 and def_dist <= 2 and shot_clock >= 20:
+        player_data[player]['zone_3'][0] += shots_made
+        player_data[player]['zone_3'][1] += total_shots
+    else:
+        player_data[player]['zone_4'][0] += shots_made
+        player_data[player]['zone_4'][1] += total_shots
+
+# Loop through each player and determine their best shooting zone based on hit rate
+for player in player_data:
+    zone_hits = [
+        (1, player_data[player]['zone_1'][0] / player_data[player]['zone_1'][1]) if player_data[player]['zone_1'][1] != 0 else (1, 0),
+        (2, player_data[player]['zone_2'][0] / player_data[player]['zone_2'][1]) if player_data[player]['zone_2'][1] != 0 else (2, 0),
+        (3, player_data[player]['zone_3'][0] / player_data[player]['zone_3'][1]) if player_data[player]['zone_3'][1] != 0 else (3, 0),
+        (4, player_data[player]['zone_4'][0] / player_data[player]['zone_4'][1]) if player_data[player]['zone_4'][1] != 0 else (4, 0),
+    ]
+    zone_hits.sort(key=lambda x: x[1], reverse=True)
+    print(f"{player}\t{zone_hits[0][0]}")
