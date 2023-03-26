@@ -7,9 +7,9 @@ from collections import defaultdict
 player_data = defaultdict(int)
 
 # Read through each line of input
-for line in sys.stdin:
+for line in (1,3,4):
+    n = 0
     while (n < 11):
-        n = 0
         print('test', 'test')
         n += 1
 
