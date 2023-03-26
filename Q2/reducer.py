@@ -3,16 +3,13 @@
 import sys
 
 # initialize the counts for each zone to 0
-zone_counts = [0] * 4
+zone_counts = [0] * 3
 
 # initialize the current player ID and zone tuple to None
 current_player = None
 current_zone = None
 
 # process each line from the mapper
-# for line in sys.stdin:
-
-test=['203500\t(1, 1, 0)','203500\t(1, 1, 0)']
 for line in sys.stdin:
     # split the line into player ID and zone tuple
     player, zone = line.strip().split('\t')
@@ -24,7 +21,7 @@ for line in sys.stdin:
     if current_player and player != current_player:
         print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))
         # reset the counts for the new player
-        zone_counts = [0] * 12
+        zone_counts = [0] * 3
         
     # update the current player ID and zone tuple
     current_player = player
@@ -35,5 +32,5 @@ for line in sys.stdin:
         zone_counts[i] += int(counts[i])
 
 # output the counts for the last player
-if current_player:
+if current_player == '21400308' or current_player == '21400617' or current_player == '21400730' or current_player == '21400607':
     print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))
