@@ -1,55 +1,24 @@
 #!/usr/bin/env python
 
 import sys
-from collections import defaultdict
 
-# Set up empty dictionary to hold player data
-player_data = defaultdict(int)
+# Define the ranges for shot distance, closest defender distance, and shot clock
+shot_dist_ranges = [(0, 5), (5, 15), (15, 25), (25, 100)]
+defender_dist_ranges = [(0, 2), (2, 4), (4, 6), (6, 100)]
+shot_clock_ranges = [(0, 6), (6, 12), (12, 18), (18, 25)]
 
-# Read through each line of input
-for line in (1,3,4):
-    n = 0
-    while (n < 11):
-        print('test', 'test')
-        n += 1
+# Initialize the counts for each zone to zero
+zone_counts = [[0 for _ in range(4)] for _ in range(4)]
 
-
-
-    # Split line into components
-#     player, shot_dist, def_dist, shot_clock, shots_made, total_shots = line.strip().split('\t')
+# Process each input record from the mapper
+for line in sys.stdin:
+    # Parse the player id and the zone counts from the input record
+    player_id, shot_dist_zone, defender_dist_zone, shot_clock_zone = line.strip().split('\t')
+    shot_dist_zone, defender_dist_zone, shot_clock_zone = int(shot_dist_zone), int(defender_dist_zone), int(shot_clock_zone)
     
-#     # Convert values to integers
-#     shot_dist = int(shot_dist)
-#     def_dist = int(def_dist)
-#     shot_clock = int(shot_clock)
-#     shots_made = int(shots_made)
-#     total_shots = int(total_shots)
+    # Update the count for the corresponding zone
+    zone_counts[shot_dist_zone][defender_dist_zone*4+shot_clock_zone] += 1
 
-#     # Check if player is already in dictionary
-#     if player not in player_data:
-#         player_data[player] = {'zone_1': [0, 0], 'zone_2': [0, 0], 'zone_3': [0, 0], 'zone_4': [0, 0]}
-
-#     # Check which zone the shot falls into and update the appropriate count
-#     if shot_dist <= 10 and def_dist <= 2 and shot_clock >= 20:
-#         player_data[player]['zone_1'][0] += shots_made
-#         player_data[player]['zone_1'][1] += total_shots
-#     elif shot_dist <= 10 and def_dist <= 2 and shot_clock < 20:
-#         player_data[player]['zone_2'][0] += shots_made
-#         player_data[player]['zone_2'][1] += total_shots
-#     elif shot_dist > 10 and def_dist <= 2 and shot_clock >= 20:
-#         player_data[player]['zone_3'][0] += shots_made
-#         player_data[player]['zone_3'][1] += total_shots
-#     else:
-#         player_data[player]['zone_4'][0] += shots_made
-#         player_data[player]['zone_4'][1] += total_shots
-
-# # Loop through each player and determine their best shooting zone based on hit rate
-# for player in player_data:
-#     zone_hits = [
-#         (1, player_data[player]['zone_1'][0] / player_data[player]['zone_1'][1]) if player_data[player]['zone_1'][1] != 0 else (1, 0),
-#         (2, player_data[player]['zone_2'][0] / player_data[player]['zone_2'][1]) if player_data[player]['zone_2'][1] != 0 else (2, 0),
-#         (3, player_data[player]['zone_3'][0] / player_data[player]['zone_3'][1]) if player_data[player]['zone_3'][1] != 0 else (3, 0),
-#         (4, player_data[player]['zone_4'][0] / player_data[player]['zone_4'][1]) if player_data[player]['zone_4'][1] != 0 else (4, 0),
-#     ]
-#     zone_hits.sort(key=lambda x: x[1], reverse=True)
-#     print(f"{player}\t{zone_hits[0][0]}")
+# Output the player id and the counts for each zone
+for i, counts in enumerate(zone_counts):
+    print(str(i+1) + '\t' + '\t'.join(str(x) for x in counts))
