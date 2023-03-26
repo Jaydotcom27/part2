@@ -1,40 +1,26 @@
-#!/usr/bin/env python
-
-from operator import itemgetter
+#!/usr/bin/python
+# --*-- coding:utf-8 --*--
 import sys
 
-# Define the zones and their boundaries
-zones = {
-    "zone1": {"shot_dist": (0, 5), "close_def_dist": (0, 2), "shot_clock": (0, 7)},
-    "zone2": {"shot_dist": (0, 5), "close_def_dist": (2, 4), "shot_clock": (0, 7)},
-    "zone3": {"shot_dist": (5, 10), "close_def_dist": (0, 2), "shot_clock": (0, 7)},
-    "zone4": {"shot_dist": (5, 10), "close_def_dist": (2, 4), "shot_clock": (0, 7)},
-}
+players = {}
 
-# A dictionary to hold the total shots and successful shots for each player and zone
-player_zone_stats = {}
-
-# Process each input record
 for line in sys.stdin:
-    # Extract the player, zone, and shot stats from the input record
-    player_zone, shot_stats = line.strip().split('\t')
-    player, zone = player_zone.split('-')
-    shots, successful = map(int, shot_stats.split(','))
+    player, shot_data = line.strip().split("\t")
+    shot_dist, def_dist, clock, shot_result = shot_data.split(',')
+    #[[shot dists..], [close def dists..], [shot clock..], [shot result...]]
+    current = players.get(player, [[],[],[],[]])
+    try:
+        current[0].append(round(float(shot_dist), 4))
+        current[1].append(round(float(def_dist), 4))
+        current[2].append(round(float(clock), 4))
+        current[3].append(int(shot_result))
+        players[player] = current
+    except ValueError:
+        pass
 
-    # Check if the player exists in the stats dictionary and add them if not
-    if player not in player_zone_stats:
-        player_zone_stats[player] = {z: {"shots": 0, "successful_shots": 0} for z in zones}
-
-    # Check which zone the shot belongs to and update the stats dictionary accordingly
-    for zone_name, zone_bounds in zones.items():
-        if (zone_bounds["shot_dist"][0] <= shot_dist <= zone_bounds["shot_dist"][1] and
-            zone_bounds["close_def_dist"][0] <= close_def_dist <= zone_bounds["close_def_dist"][1] and
-            zone_bounds["shot_clock"][0] <= shot_clock <= zone_bounds["shot_clock"][1]):
-            player_zone_stats[player][zone_name]["shots"] += shots
-            player_zone_stats[player][zone_name]["successful_shots"] += successful
-            break
-
-# Output the stats for each player and their most successful zone
-for player, zones_stats in player_zone_stats.items():
-    best_zone = max(zones_stats.items(), key=lambda x: x[1]["successful_shots"]/x[1]["shots"])[0]
-    print("{}\t{}\t{}".format(player, best_zone, zones_stats[best_zone]["successful_shots"]/zones_stats[best_zone]["shots"]))
+for player, data in sorted(players.items(), key=lambda x: x[0]):
+    shot_dist_avg = round(sum(data[0]) / len(data[0]), 4)
+    close_def_avg = round(sum(data[1]) / len(data[1]), 4)
+    shot_clock_avg = round(sum(data[2]) / len(data[2]), 4)
+    shot_rate = round(float(sum(data[3])) / len(data[3]), 4)
+    print("{}\t{},{},{},{}".format(player, shot_dist_avg, close_def_avg, shot_clock_avg, shot_rate))
