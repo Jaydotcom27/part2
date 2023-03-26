@@ -10,7 +10,7 @@
 -file reducer.py -reducer reducer.py \
 -input /part2/input/* -output /part2/output/
 
-echo "--------------------------- Question 1: Most unwanted defender ranking ---------------------------" 
+echo "--------------------------- Question 2: Best zones for Curry, Harden, Lebron and Paul ---------------------------" 
 /usr/local/hadoop/bin/hdfs dfs -cat /part2/output/part-00000
 
 /usr/local/hadoop/bin/hdfs dfs -rm -r /part2/input/
