@@ -2,7 +2,7 @@
 import sys
 import csv
 
-# define the ranges for shot distance, closest defender distance, and shot clock
+# define the ranges for shot distance, closest defender distance, and shot clock. These were defined with arbitrary fashion
 shot_dist_ranges = [(0, 5), (5, 15), (15, 25), (25, 100)]
 defender_dist_ranges = [(0, 2), (2, 4), (4, 6), (6, 100)]
 shot_clock_ranges = [(0, 6), (6, 12), (12, 18), (18, 25)]
@@ -14,10 +14,7 @@ def map_range(value, ranges):
             return i
     return len(ranges)
 
-# read input data
-# file = open('E:\@FORDHAM\BigData\shot_logs.csv', 'r')
 header = sys.stdin.readline()
-# reader = csv.reader(file)
 reader = csv.reader(sys.stdin)
 next(reader)
 
@@ -41,7 +38,3 @@ for row in reader:
     key = player
     value = (shot_dist_zone, defender_dist_zone, shot_clock_zone)
     print('{}\t{}'.format(key, value))
-    # print(player, (shot_dist_zone, defender_dist_zone, shot_clock_zone))
-
-
-# file.close()
