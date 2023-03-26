@@ -3,23 +3,19 @@
 import sys
 import csv
 
-# Read the header from the input and discard it
-header = sys.stdin.readline()
-
-# Iterate over the remaining input lines using the csv reader
+# Iterate over the input lines from the CSV
 for line in csv.reader(sys.stdin, quotechar='"'):
-    # Extract the shooter, defender, and success information from the line
+    # We extracted the shooter, defender, and success information from the line. 22nd, 16th and 14th positions respectively. 
     shooter = line[-1]
     defender = line[15]
+
+    # We clean the made and missed to 1 or 0
     made = 1 if line[13].strip() == 'made' else 0
     
     # Only process the line if it contains both shooter and defender information
     if shooter and defender:
-        # Create a key-value pair to be emitted by the mapper
+        # Created the KVP ((shooter, defender), (made))
         # The key is a string with the format 'shooter_id-defender_id'
-        # The value is a string with the format '1,success'
-        # The '1' indicates that a shot was attempted
-        # The 'success' variable is 1 if the shot was successful and 0 otherwise
         key = '{}-{}'.format(shooter, defender)
         value = '1,{}'.format(made)
         print('{}\t{}'.format(key, value))
