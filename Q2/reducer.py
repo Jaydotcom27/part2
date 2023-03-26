@@ -18,7 +18,7 @@ for line in sys.stdin:
     
     # if this is the first record or a new player, output the counts for the previous player
     if current_player and player != current_player:
-        if current_player == '21400308' or current_player == '21400617' or current_player == '21400730' or current_player == '21400607' or current_player == '203580':
+        if current_player == '101108' or current_player == '2544' or current_player == '201935' or current_player == '201939':
             print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))
             # reset the counts for the new player
             zone_counts = [0] * 4
@@ -32,5 +32,5 @@ for line in sys.stdin:
         zone_counts[i] += int(counts[i])
 
 # output the counts for the last player
-if current_player == '21400308' or current_player == '21400617' or current_player == '21400730' or current_player == '21400607' or current_player == '203580':
+if current_player == '101108' or current_player == '2544' or current_player == '201935' or current_player == '201939' or current_player:
     print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))
