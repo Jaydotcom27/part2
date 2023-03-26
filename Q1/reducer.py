@@ -1,18 +1,39 @@
+#!/usr/bin/python
+# --*-- coding:utf-8 --*--
+
 import sys
-from collections import defaultdict
 from operator import itemgetter
 
-defenders = defaultdict(lambda: [0, 0])
+defenders = {}
 
+# loop through input from stdin
 for line in sys.stdin:
+    # get data from input line and split it
     pair, shooting_data = line.strip().split('\t')
     _, defender = pair.split('-')
-    shots, successful = map(int, shooting_data.split(','))
-    defenders[defender][0] += shots
-    defenders[defender][1] += successful
+    shots, successful = shooting_data.split(',')
+    
+    # check if defender already exists in the dictionary and update their shot and successful shots count
+    current = defenders.get(defender, [0, 0])
+    try:
+        current[0] += int(shots) 
+        current[1] += int(successful)
+        defenders[defender] = current
+    except ValueError:
+        pass
 
-rates = [[key, value[1]/value[0], value[0]] for key, value in defenders.items() if value[0] >= 10]
+# create list of rates for defenders who have 10 or more shots
+rates = []
+for key, value in defenders.items():
+    if value[0] < 10:
+        continue
+    rate = float(value[1]) / value[0]
+    shots = value[0]
+    rates.append([key, rate, shots])
+
+# sort list of rates by the rate value
 rates.sort(key=itemgetter(1))
 
-for defender, rate, shots in rates[:5]:
+# print the top 10 defenders with the highest rate
+for defender, rate, shots in rates[:10]:
     print('{}\t{:.2%}\t{:,d}'.format(defender, rate, shots))
