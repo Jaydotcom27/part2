@@ -2,23 +2,38 @@
 
 import sys
 
-# Define the ranges for shot distance, closest defender distance, and shot clock
-shot_dist_ranges = [(0, 5), (5, 15), (15, 25), (25, 100)]
-defender_dist_ranges = [(0, 2), (2, 4), (4, 6), (6, 100)]
-shot_clock_ranges = [(0, 6), (6, 12), (12, 18), (18, 25)]
+# initialize the counts for each zone to 0
+zone_counts = [0] * 4
 
-# Initialize the counts for each zone to zero
-zone_counts = [[0 for _ in range(4)] for _ in range(4)]
+# initialize the current player ID and zone tuple to None
+current_player = None
+current_zone = None
 
-# Process each input record from the mapper
+# process each line from the mapper
+# for line in sys.stdin:
+
+test=['203500\t(1, 1, 0)','203500\t(1, 1, 0)']
 for line in sys.stdin:
-    # Parse the player id and the zone counts from the input record
-    player_id, shot_dist_zone, defender_dist_zone, shot_clock_zone = line.strip().split('\t')
-    shot_dist_zone, defender_dist_zone, shot_clock_zone = int(shot_dist_zone), int(defender_dist_zone), int(shot_clock_zone)
+    # split the line into player ID and zone tuple
+    player, zone = line.strip().split('\t')
     
-    # Update the count for the corresponding zone
-    zone_counts[shot_dist_zone][defender_dist_zone*4+shot_clock_zone] += 1
+    # convert the zone tuple to a list of counts
+    counts = zone.strip('()').split(',')
+    
+    # if this is the first record or a new player, output the counts for the previous player
+    if current_player and player != current_player:
+        print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))
+        # reset the counts for the new player
+        zone_counts = [0] * 12
+        
+    # update the current player ID and zone tuple
+    current_player = player
+    current_zone = zone
+    
+    # update the counts for each zone
+    for i in range(len(counts)):
+        zone_counts[i] += int(counts[i])
 
-# Output the player id and the counts for each zone
-for i, counts in enumerate(zone_counts):
-    print(str(i+1) + '\t' + '\t'.join(str(x) for x in counts))
+# output the counts for the last player
+if current_player:
+    print(current_player + '\t' + '\t'.join(str(x) for x in zone_counts))

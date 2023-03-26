@@ -38,6 +38,10 @@ for row in reader:
     shot_clock_zone = map_range(shot_clock, shot_clock_ranges)
     
     # output player name and tuple of zone counts
-    print(player, (shot_dist_zone, defender_dist_zone, shot_clock_zone))
+    key = player
+    value = (shot_dist_zone, defender_dist_zone, shot_clock_zone)
+    print('{}\t{}'.format(key, value))
+    # print(player, (shot_dist_zone, defender_dist_zone, shot_clock_zone))
+
 
 # file.close()
