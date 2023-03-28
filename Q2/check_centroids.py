@@ -2,7 +2,7 @@
 # --*-- coding:utf-8 --*--
 import sys
 
-vals = sys.argv[1:]
+# This scripts is checking for convergence or to check if the centroids are no longer changing
 old = sys.argv[1]
 old = [round(float(v),2) for v in old.strip().split(',')]
 new = sys.argv[2]
@@ -13,7 +13,5 @@ for i in range(len(old)):
     if old[i] == new[i]:
         equal += 1
 
-if equal == 3:
-    print(1)
-else:
-    print(0)
+# 3 because we have 3 dimensions for the centroids from our original data
+print(1 if equal == 3 else 0)

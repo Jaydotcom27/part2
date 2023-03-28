@@ -3,14 +3,15 @@
 import sys
 players = {}
 
+# Testing code
 # test = ['101127\t18,3,19,3', '101127\t18,3,19,3', '101127\t18,3,40,1']
 # for line in test:
 for line in sys.stdin:
     player, shot_data = line.strip().split("\t")
     shot_dist, def_dist, clock, shot_result = shot_data.split(',')
-    #[[shot dists..], [close def dists..], [shot clock..], [shot result...]]
     current = players.get(player, [[],[],[],[]])
     try:
+        # Appending all found data (and rounding) for each player
         current[0].append(round(float(shot_dist), 4))
         current[1].append(round(float(def_dist), 4))
         current[2].append(round(float(clock), 4))
@@ -19,6 +20,7 @@ for line in sys.stdin:
     except ValueError:
         pass
 
+# Generating averages for each bucket and final reducing
 for player, data in sorted(players.items(), key=lambda x: x[0]):
     shot_dist_avg = round(sum(data[0]) / len(data[0]), 4)
     close_def_avg = round(sum(data[1]) / len(data[1]), 4)
