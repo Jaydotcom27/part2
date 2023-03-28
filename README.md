@@ -15,9 +15,13 @@ To answer question #2 the mapping and reduce proccesses are a bit more dense bec
 
 ## Getting Started
 
-To get started, clone the repository and ensure that you have Python 3 installed on your machine.
+To get started, clone the repository and ensure that you have Python 3 installed on your machine. Proceed to clone the repository into the already existing `hdfs-test` directory in our Cloud cluster.
 
 `git clone https://github.com/Jaydotcom27/part2.git`
+
+Also consider cloning some test data into the already existing `hdfs-test-data` in our Clour cluster.
+
+`https://github.com/Jaydotcom27/hdfstest2`
 
 ## Data
 
