@@ -17,7 +17,7 @@
 -file centroids_reducer.py -reducer centroids_reducer.py \
 -input /part2/matrix/output/* -output /part2/centroids/output/
 
-# readarray -t centroids < <(/usr/local/hadoop/bin/hdfs dfs -cat /part2/centroids/output/*)
+readarray -t centroids < <(/usr/local/hadoop/bin/hdfs dfs -cat /part2/centroids/output/*)
 
 # COUNT=0
 # ITER=0
