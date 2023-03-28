@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # --*-- coding:utf-8 --*--
 import sys
-
 players = {}
 
+# test = ['101127\t18,3,19,3', '101127\t18,3,19,3', '101127\t18,3,40,1']
+# for line in test:
 for line in sys.stdin:
     player, shot_data = line.strip().split("\t")
     shot_dist, def_dist, clock, shot_result = shot_data.split(',')
