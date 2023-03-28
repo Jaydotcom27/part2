@@ -22,7 +22,7 @@ mapfile -t centroids < <(/usr/local/hadoop/bin/hdfs dfs -cat /part2/centroids/ou
 COUNT=0
 ITER=0
 
-while [ $ITER -lt 5 ]
+while [ $ITER -lt 15 ]
 do
     # Clear output folder for next iteration
     /usr/local/hadoop/bin/hdfs dfs -rm -r /part2/new_centroids/output/
