@@ -30,7 +30,7 @@ do
     # Prepare centroids for mapper2
     updated_centroids=$(python3 format_centroid.py "${centroids[@]}")
 
-    echo "******************** Updating centroids ********************"
+    echo "------------------------- updating centroids "-------------------------
     /usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.1.jar \
     -file mapper2.py -mapper "mapper2.py $updated_centroids" \
     -file reducer2.py -reducer reducer2.py \
@@ -61,7 +61,7 @@ do
 done
 echo "DONE! $STEP iterations"
 
-echo "******************** Final clusters ********************"
+echo "------------------------- resulting clusters -------------------------"
 /usr/local/hadoop/bin/hdfs dfs -cat /part2/new_centroids/output/*
 
 
